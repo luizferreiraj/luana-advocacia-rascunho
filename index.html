@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luana Evaristo Gomes | Advocacia Criminal em Uberlândia</title>
+  <meta name="description" content="Advocacia criminal em Uberlândia. Defesa técnica e humana em processos criminais para pessoas físicas e empresas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+  <!-- Sprite de icones — reutilizados via <use>, sem dependencia externa.
+       Ver .claude/kb/desenvolvimento-web/concepts/html-semantico-e-acessivel.md -->
+  <svg hidden aria-hidden="true">
+    <defs>
+      <symbol id="icone-chat" viewBox="0 0 24 24">
+        <path d="M4 5 H20 V16 H9 L4 20 V16 H4 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="icone-lupa" viewBox="0 0 24 24">
+        <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+        <line x1="21" y1="21" x2="15.5" y2="15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="icone-escudo" viewBox="0 0 24 24">
+        <path d="M12 2 L20 6 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V6 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="icone-documento" viewBox="0 0 24 24">
+        <path d="M6 2 H14 L18 6 V22 H6 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="2"/>
+        <line x1="9" y1="16" x2="15" y2="16" stroke="currentColor" stroke-width="2"/>
+      </symbol>
+      <symbol id="icone-balanca" viewBox="0 0 24 24">
+        <line x1="12" y1="3" x2="12" y2="19" stroke="currentColor" stroke-width="2"/>
+        <line x1="5" y1="19" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M3 6 L1 11 L5 11 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M21 6 L19 11 L23 11 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="icone-martelo" viewBox="0 0 24 24">
+        <rect x="2" y="14" width="10" height="4" rx="1" transform="rotate(-35 7 16)" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="10" y="6" width="10" height="4" rx="1" transform="rotate(-35 15 8)" fill="none" stroke="currentColor" stroke-width="2"/>
+        <line x1="4" y1="20" x2="10" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="cabecalho">
+    <div class="container cabecalho__conteudo">
+      <!-- TODO: logo real da cliente entra aqui, substituindo o placeholder -->
+      <a href="#hero" class="cabecalho__marca">
+        <img src="assets/img/logo-placeholder.svg" alt="Luana Evaristo Gomes" height="30">
+      </a>
+
+      <button type="button" id="botao-menu" class="botao-menu" aria-expanded="false" aria-controls="menu-mobile">
+        <span class="sr-only">Abrir menu</span>
+        <span class="botao-menu__barra"></span>
+        <span class="botao-menu__barra"></span>
+        <span class="botao-menu__barra"></span>
+      </button>
+
+      <nav id="menu-mobile" class="menu" aria-label="Navegação principal">
+        <a href="#sobre">Sobre</a>
+        <a href="#areas-de-atuacao">Área de Atuação</a>
+        <a href="#artigos">Artigos</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contato" class="menu__cta">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- TODO: numero real de OAB, apos a 2a reuniao -->
+    <section id="hero" class="hero" aria-labelledby="hero-titulo">
+      <div class="container hero__conteudo">
+        <p class="hero__oab">OAB/MG nº 000.000 <span class="placeholder-tag">(número a confirmar)</span></p>
+        <!-- Advocacia Criminal · Uberlandia mantido como linha pequena por SEO local
+             (ver kb/design-de-sites/patterns/seo-tecnico-on-page.md) — o nome virou o H1
+             a pedido do usuario; se preferir remover essa linha, e so tirar. -->
+        <p class="hero__kicker">Advocacia Criminal · Uberlândia</p>
+        <h1 id="hero-titulo">Advogada Luana Evaristo Gomes</h1>
+        <p class="hero__subtitulo">
+          Advogada inscrita na OAB/MG, atuo na defesa de pessoas físicas e empresas em
+          processos criminais. Acompanho cada caso de perto, com comunicação clara sobre
+          cada etapa do processo.
+        </p>
+        <a href="https://wa.me/5500000000000" class="botao botao--acento" target="_blank" rel="noopener">
+          <svg class="icone" aria-hidden="true"><use href="#icone-chat"></use></svg>
+          Fale agora no WhatsApp
+        </a>
+
+        <!-- Titulo visual removido a pedido do usuario; mantido oculto (sr-only)
+             para leitor de tela, ja que os 3 cards formam um grupo com sentido proprio. -->
+        <h2 class="sr-only">Como Funciona o Atendimento</h2>
+        <div class="grade-cartoes grade-cartoes--hero">
+          <div class="cartao cartao--vidro">
+            <svg class="cartao__icone" aria-hidden="true"><use href="#icone-chat"></use></svg>
+            <h3>Contato Imediato</h3>
+            <p>Fale direto pelo WhatsApp e explique sua situação com sigilo.</p>
+          </div>
+          <div class="cartao cartao--vidro">
+            <svg class="cartao__icone" aria-hidden="true"><use href="#icone-lupa"></use></svg>
+            <h3>Análise do Caso</h3>
+            <p>Avaliação cuidadosa de cada detalhe do processo ou da situação.</p>
+          </div>
+          <div class="cartao cartao--vidro">
+            <svg class="cartao__icone" aria-hidden="true"><use href="#icone-escudo"></use></svg>
+            <h3>Estratégia de Defesa</h3>
+            <p>Definição do caminho jurídico mais adequado para o seu caso.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Envolve as secoes claras numa unica zona: a foto de fundo fica UMA
+         vez so, continua, em vez de recalculada por secao (o que causava o
+         "corte" estranho — cada secao tem altura diferente e o cover
+         recalculava a foto em escala/posicao diferente a cada uma). -->
+    <div class="zona-clara">
+    <section id="sobre" class="secao" aria-labelledby="sobre-titulo">
+      <div class="container secao__conteudo secao__conteudo--duas-colunas">
+        <img src="assets/img/avatar-placeholder.svg" alt="Ilustração de avatar — foto profissional entra aqui" class="avatar-placeholder" width="220" height="220">
+        <div>
+          <h2 id="sobre-titulo">Sobre</h2>
+          <!-- TODO: substituir por biografia/trajetoria real escrita pela Dra. Luana -->
+          <p>
+            Graduada em Direito, dedico minha atuação profissional ao Direito Criminal,
+            com atenção próxima a cada cliente e busca constante de aprimoramento na área.
+          </p>
+          <p class="placeholder-tag">Texto de exemplo — substituir pela trajetória real na próxima etapa.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="areas-de-atuacao" class="secao" aria-labelledby="areas-titulo">
+      <div class="container secao__conteudo">
+        <h2 id="areas-titulo">Área de Atuação</h2>
+        <p>Direito Criminal — pessoa física e pessoa jurídica.</p>
+        <div class="grade-cartoes">
+          <div class="cartao">
+            <svg class="cartao__icone" aria-hidden="true"><use href="#icone-documento"></use></svg>
+            <h3>Inquérito Policial</h3>
+            <p>Acompanhamento desde a fase de investigação.</p>
+          </div>
+          <div class="cartao">
+            <svg class="cartao__icone" aria-hidden="true"><use href="#icone-balanca"></use></svg>
+            <h3>Defesa em Processo Criminal</h3>
+            <p>Atuação em todas as fases do processo, PF e PJ.</p>
+          </div>
+          <div class="cartao">
+            <svg class="cartao__icone" aria-hidden="true"><use href="#icone-martelo"></use></svg>
+            <h3>Audiências e Recursos</h3>
+            <p>Representação em audiências e instâncias recursais.</p>
+          </div>
+          <div class="cartao">
+            <svg class="cartao__icone" aria-hidden="true"><use href="#icone-escudo"></use></svg>
+            <h3>Flagrante e Prisão Preventiva</h3>
+            <p>Orientação imediata em situações de urgência.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- Segunda zona clara, com uma terceira foto (diferente das outras duas) —
+         a foto da zona anterior so cobria Sobre/Area de Atuacao (altura fixa),
+         entao aqui embaixo tambem ganha imagem propria em vez de ficar sem nenhuma. -->
+    <div class="zona-clara zona-clara--2">
+    <section id="artigos" class="secao" aria-labelledby="artigos-titulo">
+      <div class="container secao__conteudo">
+        <h2 id="artigos-titulo">Conteúdo Educativo</h2>
+        <p>
+          Em breve, artigos explicando de forma simples o processo criminal e os direitos
+          de quem responde a um processo.
+        </p>
+        <p class="placeholder-tag">Pautas a definir — seção reservada para o futuro blog/artigos.</p>
+      </div>
+    </section>
+
+    <section id="faq" class="secao" aria-labelledby="faq-titulo">
+      <div class="container secao__conteudo">
+        <h2 id="faq-titulo">Perguntas Frequentes</h2>
+        <!-- TODO: respostas abaixo sao rascunho generico (nao especifico do caso) —
+             Dra. Luana revisa e ajusta como profissional habilitada antes de publicar -->
+        <div class="faq-item">
+          <h3>O que fazer se eu for detido?</h3>
+          <p>Mantenha a calma, exerça o direito de permanecer em silêncio e solicite a
+            presença de um advogado antes de responder a qualquer pergunta ou assinar
+            qualquer documento.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Preciso de advogado desde a primeira audiência?</h3>
+          <p>Sim. O direito de defesa vale desde a fase de investigação — ter acompanhamento
+            jurídico desde o início ajuda a preservar seus direitos em cada etapa.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Quanto tempo dura um processo criminal?</h3>
+          <p>Varia bastante conforme a complexidade do caso, a fase processual e a
+            movimentação do fórum — não há um prazo fixo válido para todos os casos.</p>
+        </div>
+        <p class="placeholder-tag">Respostas em formato de rascunho geral — revisar e ajustar antes de publicar.</p>
+      </div>
+    </section>
+
+    <!-- TODO: conectar backend + validacao server-side antes do lancamento real -->
+    <section id="contato" class="secao" aria-labelledby="contato-titulo">
+      <div class="container secao__conteudo">
+        <h2 id="contato-titulo">Contato</h2>
+        <p>Entre em contato para uma primeira conversa sobre o seu caso.</p>
+
+        <form class="formulario" aria-label="Formulário de contato (rascunho, envio ainda não ativo)">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" required>
+
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" required>
+
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+
+          <button type="submit" class="botao botao--primaria">Enviar</button>
+          <p class="placeholder-tag">Rascunho: este formulário ainda não envia dados de verdade.</p>
+        </form>
+
+        <a href="https://wa.me/5500000000000" class="botao botao--acento" target="_blank" rel="noopener">
+          <svg class="icone" aria-hidden="true"><use href="#icone-chat"></use></svg>
+          Ou fale agora no WhatsApp
+        </a>
+      </div>
+    </section>
+    </div>
+
+  </main>
+
+  <!-- TODO: link real do Instagram e numero real de WhatsApp apos aprovacao do rascunho -->
+  <footer class="rodape">
+    <div class="container rodape__conteudo">
+      <p><strong>Luana Evaristo Gomes</strong> — OAB/MG nº 000.000 <span class="placeholder-tag">(a confirmar)</span></p>
+
+      <div class="rodape__redes">
+        <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" aria-label="WhatsApp (link provisório)">WhatsApp</a>
+        <a href="#instagram-pendente" aria-label="Instagram (link a definir)">Instagram</a>
+      </div>
+
+      <nav class="rodape__legal" aria-label="Links legais">
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Uso</a>
+      </nav>
+
+      <p class="rodape__copyright">© 2026 Luana Evaristo Gomes. Todos os direitos reservados.</p>
+      <p class="placeholder-tag">Rodapé provisório — conteúdo final a alinhar na próxima reunião.</p>
+    </div>
+  </footer>
+
+  <!-- TODO: numero real de WhatsApp apos aprovacao do rascunho -->
+  <a href="https://wa.me/5500000000000" class="whatsapp-flutuante" target="_blank" rel="noopener" aria-label="Falar agora no WhatsApp">
+    <svg class="icone" aria-hidden="true"><use href="#icone-chat"></use></svg>
+  </a>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

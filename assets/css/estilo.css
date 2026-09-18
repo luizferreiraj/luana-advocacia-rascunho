@@ -1,0 +1,504 @@
+/* Tokens de design — ver .claude/kb/design-de-sites/patterns/sistema-de-design-consistente.md */
+/* Contraste de cada par abaixo verificado (WCAG AA >= 4,5:1) antes de fixar. */
+:root {
+  --cor-primaria: #0a3d5c;
+  --cor-secundaria: #b8873a;
+  --cor-acento: #1f7a4d;
+  --cor-texto: #1a1a1a;
+  --cor-texto-apoio: #4a4a4a;
+  --cor-fundo: #fdfcf9;
+  --cor-fundo-alt: #f1efe9;
+  --cor-borda: #d8d4cb;
+
+  --fonte-titulo: "Lora", Georgia, serif;
+  --fonte-corpo: "Inter", -apple-system, sans-serif;
+
+  --espaco-sm: 0.5rem;
+  --espaco-md: 1rem;
+  --espaco-lg: 2rem;
+  --espaco-xl: 4rem;
+
+  --largura-maxima: 1080px;
+  --altura-cabecalho: 72px;
+}
+
+@layer base, layout, componentes, utilitarios;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  /* Rolagem suave ao clicar no menu — ver kb/desenvolvimento-web/concepts/javascript-moderno.md
+     (resolvido em CSS puro, sem JS) e kb/design-de-sites/concepts/microinteracoes.md
+     (respeitar prefers-reduced-motion). */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  section[id] {
+    scroll-margin-top: var(--altura-cabecalho);
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--fonte-corpo);
+    color: var(--cor-texto);
+    background: var(--cor-fundo);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--fonte-titulo);
+    line-height: 1.25;
+    margin-top: 0;
+  }
+
+  /* Assinatura visual sutil — traco secundario sob o titulo, so decorativo.
+     Nao usado em h1 (hero) para nao competir com o CTA. */
+  h2::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: var(--cor-secundaria);
+    margin-top: var(--espaco-sm);
+  }
+
+  h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
+  h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+  h3 { font-size: 1.1rem; }
+
+  p { margin: 0 0 var(--espaco-md); }
+
+  a {
+    color: var(--cor-primaria);
+    text-decoration: underline;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  /* Reforco defensivo: [hidden] ja e display:none por padrao no navegador,
+     mas garantir explicito para o sprite de icones nunca ocupar espaco. */
+  svg[hidden] { display: none; }
+}
+
+@layer layout {
+  .container {
+    max-width: var(--largura-maxima);
+    margin-inline: auto;
+    padding-inline: var(--espaco-md);
+  }
+
+  .secao {
+    padding-block: var(--espaco-xl);
+  }
+
+  /* Linha divisoria entre secoes dentro da zona clara — sem ela, as secoes
+     ficavam sem nenhuma fronteira visual e pareciam "uma so com varios
+     titulos". Nao aparece antes da primeira secao (Sobre). */
+  .zona-clara .secao + .secao {
+    border-top: 1px solid rgba(10, 61, 92, 0.14);
+  }
+
+  /* Mesma linha divisoria entre as duas zonas claras (Area de Atuacao ->
+     Conteudo Educativo), ja que agora sao dois wrappers, nao mais irmaos
+     diretos dentro do mesmo .zona-clara. */
+  .zona-clara + .zona-clara {
+    border-top: 1px solid rgba(10, 61, 92, 0.14);
+  }
+
+  /* Wrapper unico ao redor de Sobre..Contato: a foto aparece UMA vez so,
+     em tamanho fixo (nao "cover"), ancorada no topo — nao recalculada por
+     secao (isso evitava o corte "por secao", mas a foto em si tinha borda
+     dura visivel). Agora a foto fica num ::before proprio, com mask-image
+     esmaecendo a borda esquerda e inferior (sem corte reto) — ver mais
+     abaixo. So a partir de tablet; no celular fica so a cor solida. */
+  .zona-clara {
+    position: relative;
+    background-color: var(--cor-fundo);
+  }
+
+  @media (min-width: 768px) {
+    .zona-clara {
+      overflow: hidden;
+      background-color: transparent;
+    }
+
+    .zona-clara::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1400px;
+      height: 900px;
+      z-index: -1;
+      pointer-events: none;
+      /* Foto diferente da do hero (martelo + livro, sem a estatua) — usar a
+         mesma imagem duas vezes seguidas (hero escuro -> aqui claro) ficava
+         repetitivo, mesmo com cor diferente. Overlay a 92% ja verificado:
+         pior caso (preto puro da foto) fica em 13,56:1 de contraste para
+         texto escuro por cima. */
+      background-image:
+        linear-gradient(rgba(253, 252, 249, 0.92), rgba(253, 252, 249, 0.92)),
+        url("../img/fundo-secoes-claras.jpg");
+      background-repeat: no-repeat;
+      background-position: top right;
+      background-size: cover;
+      /* Esmaece em TODAS as direcoes a partir do canto superior-direito
+         (onde a foto fica ancorada) — um gradiente linear diagonal (como
+         antes) so esmaecia numa direcao, deixando o lado direito/inferior
+         com corte reto visivel quando a caixa de altura fixa (900px)
+         terminava. Radial cobre isso: fica totalmente transparente a 65%
+         do raio, bem antes de chegar em qualquer borda da caixa. */
+      mask-image: radial-gradient(ellipse at top right, black 20%, transparent 65%);
+      -webkit-mask-image: radial-gradient(ellipse at top right, black 20%, transparent 65%);
+    }
+
+    /* Terceira foto (martelo + livro fechado, fundo escuro/minimalista) —
+       diferente das outras duas, para nao repetir nem entre as zonas claras.
+       Overlay mais baixo (75%, nao 92%) porque essa foto e majoritariamente
+       preta — com 92% ela quase desaparecia. Pior caso recalculado (preto
+       puro a 75%): 9,27:1 de contraste para texto escuro por cima. */
+    .zona-clara--2::before {
+      background-image:
+        linear-gradient(rgba(253, 252, 249, 0.75), rgba(253, 252, 249, 0.75)),
+        url("../img/fundo-secoes-claras-2.jpg");
+    }
+  }
+
+  .secao__conteudo--duas-colunas {
+    display: grid;
+    gap: var(--espaco-lg);
+  }
+
+  @media (min-width: 640px) {
+    .secao__conteudo--duas-colunas {
+      grid-template-columns: auto 1fr;
+      align-items: start;
+    }
+  }
+}
+
+@layer componentes {
+  .cabecalho {
+    border-bottom: 1px solid var(--cor-borda);
+    background: var(--cor-fundo);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .cabecalho__conteudo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--espaco-sm);
+  }
+
+  .cabecalho__marca {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .botao-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--espaco-sm);
+  }
+
+  .botao-menu__barra {
+    width: 22px;
+    height: 2px;
+    background: var(--cor-primaria);
+  }
+
+  .menu {
+    display: none;
+    flex-direction: column;
+    gap: var(--espaco-md);
+  }
+
+  .menu.aberto { display: flex; }
+
+  .menu a {
+    text-decoration: none;
+    color: var(--cor-texto);
+  }
+
+  .menu__cta { font-weight: 700; }
+
+  @media (min-width: 768px) {
+    .botao-menu { display: none; }
+    .menu { display: flex; flex-direction: row; }
+  }
+
+  /* Foto real (Unsplash License, uso comercial livre, sem atribuicao
+     obrigatoria — ver README) com gradiente navy (nao mais tom chapado, para
+     dar mais profundidade). Ponto mais permissivo do gradiente (#0f4a68 a
+     80%) testado contra o pior caso (branco puro da foto): 5,55:1, acima de
+     4,5:1. Cobre a secao inteira em qualquer tamanho — inclusive atras dos
+     cards de vidro. */
+  .hero {
+    padding-block: var(--espaco-xl);
+    background-color: var(--cor-primaria);
+    background-image:
+      linear-gradient(160deg, rgba(8, 44, 66, 0.88), rgba(15, 74, 104, 0.8)),
+      url("../img/fundo-justica.jpg");
+    background-repeat: no-repeat, no-repeat;
+    background-position: center, center;
+    background-size: cover, cover;
+    color: white;
+  }
+
+  .hero a { color: white; }
+
+  /* Cards "Como Funciona" agora moram dentro do hero (sem secao escura
+     separada) — nao precisa mais de corte diagonal entre secoes. */
+  .grade-cartoes--hero { margin-top: var(--espaco-xl); }
+
+  .hero__oab {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.85rem;
+    padding: 4px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    margin-bottom: var(--espaco-md);
+  }
+
+  .hero__kicker {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #d9d9d9;
+    margin-bottom: var(--espaco-sm);
+  }
+
+  .hero__subtitulo { font-size: 1.1rem; max-width: 40rem; }
+
+  .icone {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .grade-cartoes {
+    display: grid;
+    gap: var(--espaco-md);
+    margin-top: var(--espaco-lg);
+  }
+
+  @media (min-width: 640px) {
+    .grade-cartoes {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+  }
+
+  .cartao {
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: var(--espaco-lg);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .cartao:hover {
+    box-shadow: 0 8px 20px rgba(10, 61, 92, 0.15);
+  }
+
+  /* Variante "vidro" para cards sobre fundo escuro ilustrado (dentro do .hero).
+     Contraste verificado: titulo branco 9,05:1, descricao #d9d9d9 6,41:1,
+     icone dourado (decorativo) 3,56:1 — todos sobre o pior caso de composicao. */
+  .cartao--vidro {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: white;
+  }
+
+  .cartao--vidro:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .cartao--vidro p { color: #d9d9d9; }
+
+  .cartao--vidro .cartao__icone { color: var(--cor-secundaria); }
+
+  @supports (backdrop-filter: blur(1px)) {
+    .cartao--vidro { backdrop-filter: blur(6px); }
+  }
+
+  .cartao__icone {
+    width: 40px;
+    height: 40px;
+    color: var(--cor-primaria);
+    margin-bottom: var(--espaco-sm);
+  }
+
+  .cartao h3 { margin-bottom: var(--espaco-sm); }
+  .cartao p { margin-bottom: 0; font-size: 0.95rem; }
+
+  /* Revelacao suave ao rolar — classe so existe se o JS rodou (progressive
+     enhancement); sem JS, o cartao fica visivel normalmente desde o inicio.
+     Ver kb/design-de-sites/concepts/microinteracoes.md. */
+  .cartao--animavel {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .cartao--animavel.revelado {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .whatsapp-flutuante {
+    position: fixed;
+    bottom: var(--espaco-md);
+    right: var(--espaco-md);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--cor-acento);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    z-index: 20;
+  }
+
+  .whatsapp-flutuante .icone { width: 28px; height: 28px; }
+
+  .avatar-placeholder {
+    border-radius: 50%;
+    background: var(--cor-fundo-alt);
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--cor-borda);
+    padding-block: var(--espaco-md);
+  }
+
+  .formulario {
+    display: grid;
+    gap: var(--espaco-sm);
+    max-width: 32rem;
+    margin-bottom: var(--espaco-lg);
+  }
+
+  .formulario input,
+  .formulario textarea {
+    font: inherit;
+    padding: var(--espaco-sm);
+    border: 1px solid var(--cor-borda);
+    border-radius: 4px;
+  }
+
+  .botao {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 1.75rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .botao .icone { width: 20px; height: 20px; }
+
+  .botao--acento {
+    /* Gradiente sutil em vez de cor chapada — ponta clara (#217f52) testada
+       contra texto branco: 4,97:1, ainda acima de 4,5:1. */
+    background: linear-gradient(135deg, #217f52, var(--cor-acento));
+    color: white;
+    box-shadow: 0 6px 16px rgba(31, 122, 77, 0.35);
+  }
+
+  .botao--acento:hover {
+    box-shadow: 0 8px 20px rgba(31, 122, 77, 0.45);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .botao--acento:hover { transform: translateY(-2px); }
+  }
+
+  .botao--primaria {
+    /* Ponta clara (#0f4a68) testada contra texto branco: 9,55:1. */
+    background: linear-gradient(135deg, #0f4a68, var(--cor-primaria));
+    color: white;
+  }
+
+  .rodape {
+    background: var(--cor-primaria);
+    color: white;
+    padding-block: var(--espaco-lg);
+  }
+
+  .rodape a { color: white; }
+
+  .rodape__redes {
+    display: flex;
+    gap: var(--espaco-md);
+    margin-block: var(--espaco-sm);
+  }
+
+  .rodape__legal {
+    display: flex;
+    gap: var(--espaco-md);
+    margin-block: var(--espaco-sm);
+  }
+
+  .rodape__copyright {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+}
+
+@layer utilitarios {
+  .placeholder-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--cor-texto-apoio);
+  }
+
+  /* Sobre fundo escuro (hero/rodape), #4a4a4a fica quase invisivel (1,29:1) —
+     usar tom claro que mantem >= 4,5:1 sobre --cor-primaria (verificado: 8,11:1). */
+  .hero .placeholder-tag,
+  .rodape .placeholder-tag {
+    color: #d9d9d9;
+  }
+
+  /* Defesa em profundidade: mesmo que o JS ja evite adicionar .cartao--animavel
+     quando prefers-reduced-motion esta ativo, a regra precisa estar na layer
+     utilitarios (a de maior prioridade) para de fato vencer @layer componentes,
+     onde .cartao--animavel e definida. Em @layer base nao teria efeito. */
+  @media (prefers-reduced-motion: reduce) {
+    .cartao--animavel {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}

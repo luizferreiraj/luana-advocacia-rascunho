@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-label="Ilustração de avatar — foto profissional entra aqui">
+  <title>Placeholder de foto profissional</title>
+  <circle cx="110" cy="110" r="110" fill="#f1efe9"/>
+  <circle cx="110" cy="88" r="38" fill="#0a3d5c"/>
+  <path d="M40 200c0-46 31-78 70-78s70 32 70 78" fill="#0a3d5c"/>
+  <circle cx="110" cy="110" r="108" fill="none" stroke="#d8d4cb" stroke-width="2"/>
+</svg>
